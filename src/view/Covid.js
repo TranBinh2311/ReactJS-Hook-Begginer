@@ -7,18 +7,38 @@ import moment from "moment"
 const Covid = () => {
 
     const [dataCovid, setDataCovid] =useState([])
-
-    useEffect(async () => {
-       let res = await axios.get("https://api.covid19api.com/country/vietnam?from=2021-10-1T00:00:00Z&to=2021-10-20T00:00:00Z")
-       let data = res && res.data ? res.data : [];
-       if(data && data.length > 0){
-           data.map(item => {
-               item.Date = moment(item.Date).format('DD/MM/YYYY');
-               return item;
-           })
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    useEffect(() => {
+       async function fetchData(){
+        setTimeout( async ()=>{
+            try{
+                let res = await axios.get("https://api.covid19api.com/country/vietnam?from=2021-11-1T00:00:00Z&to=2021-12-1T00:00:00Z")
+                let data = res && res.data ? res.data : [];
+                if(data && data.length > 0){
+                    data.map(item => {
+                        item.Date = moment(item.Date).format('DD/MM/YYYY');
+                        return item;
+                    })
+                    data = data.reverse()
+                }
+                setDataCovid(data);
+                setLoading(false);
+                setError(false);
+            }
+            catch(e){
+                setLoading(false);
+                setError(true);
+                
+            } 
+        }, 100);
        }
-       setDataCovid(data);
+
+       fetchData();
+       
     }, [])
+
+
     return (
         <>
            <table>
@@ -33,7 +53,7 @@ const Covid = () => {
                </thead>
 
                <tbody>
-                   {dataCovid && dataCovid.length >0 && 
+                   {error === false && loading === false && dataCovid && dataCovid.length >0 && 
                    dataCovid.map((item) => {
                        return (
                         <tr key={item.ID}>
@@ -45,6 +65,21 @@ const Covid = () => {
                         </tr>
                        );
                    })}
+
+                   { loading === true
+                    && <tr> 
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                      </tr>
+                   }
+                   { error === true
+                    && <tr> 
+                        Something's Wrong 
+                      </tr>
+                   }
                     
                </tbody>
                 

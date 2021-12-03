@@ -5,6 +5,13 @@ import { useState , useEffect } from 'react';
 import Todos from './view/Todos';
 import Form from './view/Form';
 import Covid from './view/Covid';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+}
+from "react-router-dom"
 
 const App = () => {
 
@@ -65,29 +72,43 @@ const App = () => {
 
   
   return (
-    <div className="App">
-      <Nav/>
-      <img style= {{height: "100px", width : "100px"}} src={logo} className="App-logo" alt="logo" /> 
-      <h1>Bảng tổng hợp Covid 19</h1> 
-      <Covid/>
-      {/* <Form
-        address = {address}
-        handleEventChange = {handleEventChange}
-        handleEventClick = {handleEventClick}
-      />
-      <Todos
-        todos= {todos}
-        title = "All Title"
-        handleDeleteData = {handleDeleteData}
-      />
+    <Router>
+        <div className="App">
+          <Nav/>
+          <img style= {{height: "100px", width : "100px"}} src={logo} className="App-logo" alt="logo" /> 
+         
+          <Switch>
+            <Route path='/home'  exact ={true}>
+                  <h1>Bảng tổng hợp Covid 19</h1> 
+                  <Covid/> 
+            </Route>
+            <Route path='/user'>
+                 <Form
+                      address = {address}
+                      handleEventChange = {handleEventChange}
+                      handleEventClick = {handleEventClick}
+                  />
+                  <Todos
+                    todos= {todos}
+                    title = "All Title"
+                    handleDeleteData = {handleDeleteData}
+                  />
+            </Route>
+            <Route path='/about'>
+                  <Todos
+                    todos= {todos.filter( item =>{return (item.type === '1')} )}
+                    title = "Binh Todo"
+                    handleDeleteData= {handleDeleteData}
+                  /> 
+            </Route>
+            <Route path='/todos'>
+                 <h1>4</h1> 
+            </Route>
 
-      <Todos
-        todos= {todos.filter( item =>{return (item.type === '1')} )}
-        title = "Binh Todo"
-        handleDeleteData= {handleDeleteData}
-      /> */}
+          </Switch>
+        </div>
 
-    </div>
+    </Router>
   );
 
   

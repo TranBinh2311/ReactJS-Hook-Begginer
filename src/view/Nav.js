@@ -1,14 +1,14 @@
 import React from 'react'
 import '../view/Nav.scss'
-
+import { NavLink } from 'react-router-dom'
 const Nav = () => {
     return (
         <div className= "topnav">
             <ul>
-                <li><a className="active" href="#home">Home</a></li>
-                <li><a href="#news">News</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#about">About</a></li>
+                <li><NavLink  activeClassName="active1" to="home" exact>Home</NavLink ></li>
+                <li><NavLink  activeClassName="active1" to = "user">News</NavLink ></li>
+                <li><NavLink activeClassName="active1" to="about">Contact</NavLink ></li>
+                <li><NavLink  activeClassName="active1" to="todos">Todo</NavLink ></li>
             </ul>
         </div>
     )
